@@ -1,0 +1,81 @@
+CPU Main:
+Initialize GLFW:
+
+glfwInit()
+Set OpenGL version and profile: glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, major);, glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor);, glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);.
+Create Window:
+
+glfwCreateWindow()
+glfwMakeContextCurrent(window)
+Load GLAD: gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+Set viewport: glViewport(0, 0, width, height);
+Shader Compilation and Program Creation:
+
+Define vertex and fragment shader source code.
+Create shader objects: glCreateShader(GL_VERTEX_SHADER), glCreateShader(GL_FRAGMENT_SHADER).
+Compile shaders: glCompileShader(shader).
+Create shader program: glCreateProgram().
+Attach shaders: glAttachShader(program, shader).
+Link program: glLinkProgram(program).
+Delete shader objects: glDeleteShader(shader).
+Buffers and Vertex Array Objects (VAOs):
+
+Generate buffer objects: glGenBuffers().
+Bind buffer objects: glBindBuffer().
+Populate buffer objects with data: glBufferData().
+Generate vertex array objects: glGenVertexArrays().
+Bind vertex array objects: glBindVertexArray().
+Texture Loading:
+
+Load image using STB library.
+Generate texture object: glGenTextures().
+Bind texture object: glBindTexture().
+Set texture parameters: glTexParameteri().
+Assign image data to texture: glTexImage2D().
+Free image data: stbi_image_free().
+Rendering Loop:
+
+Render loop to keep the window open.
+Clear the color and depth buffers: glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT).
+Use shader program: glUseProgram().
+Bind necessary VAOs and textures.
+Draw elements: glDrawElements() or glDrawArrays().
+Terminate GLFW:
+
+glfwTerminate().
+GPU Shaders:
+Vertex Shader:
+
+glsl
+
+#version 330 core
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec2 texCoord;
+out vec2 TexCoord;
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+
+void main()
+{
+    gl_Position = projection * view * model * vec4(position, 1.0);
+    TexCoord = texCoord;
+}
+Fragment Shader:
+
+glsl
+
+#version 330 core
+in vec2 TexCoord;
+out vec4 FragColor;
+uniform sampler2D tex0;
+
+void main()
+{
+    FragColor = texture(tex0, TexCoord);
+}
+Transformation:
+Use uniform variables to pass transformation matrices (model, view, projection) from CPU to GPU.
+Apply transformations to vertices in the vertex shader.
+Combine model, view, and projection matrices to transform vertices properly.
+Example: glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
