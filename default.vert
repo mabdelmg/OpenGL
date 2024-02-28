@@ -16,12 +16,15 @@ out vec2 texCoord;
 // Imports the camera matrix from the main function
 
 uniform mat4 camMatrix;
-
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 proj;
 
 void main()
 {
 	// Outputs the positions/coordinates of all vertices
-	gl_Position = camMatrix * vec4(aPos, 1.0);
+	// gl_Position = camMatrix * vec4(aPos, 1.0);
+	gl_Position = proj * view * model * vec4(aPos , 1);
 	// Assigns the colors from the Vertex Data to "color"
 	color = aColor;
 	// Assigns the texture coordinates from the Vertex Data to "texCoord"
